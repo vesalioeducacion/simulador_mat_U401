@@ -1,0 +1,1707 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bioestadística Médica: Estadística Descriptiva y Clasificación de Variables | UCCuyo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- KaTeX for crisp mathematical formulas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Outfit & JetBrains Mono -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        accent: {
+                            DEFAULT: '#436600',
+                            hover: '#344f00',
+                            light: '#f4f7ee'
+                        },
+                        medblue: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            800: '#0c4a6e',
+                            900: '#082f49',
+                        },
+                        medemerald: {
+                            50: '#ecfdf5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        .text-accent { color: #436600; }
+        .bg-accent { background-color: #436600; }
+        .bg-accent-hover:hover { background-color: #344f00; }
+        .bg-accent-light { background-color: #f4f7ee; }
+        .border-accent { border-color: #436600; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Custom Range Slider */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: #cbd5e1;
+            border-radius: 999px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #436600;
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -6px;
+            box-shadow: 0 2px 5px rgba(67, 102, 0, 0.4);
+            border: 2px solid #ffffff;
+            transition: transform 0.15s ease, background-color 0.15s ease;
+        }
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            background: #344f00;
+        }
+        .math-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f4f7ee 100%);
+            border-left: 4px solid #436600;
+        }
+        .clinical-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%);
+            border-left: 4px solid #0284c7;
+        }
+        .katex-display {
+            margin: 0.65em 0 !important;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0.25rem 0;
+        }
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-accent selection:text-white">
+
+    <!-- Cabecera Institucional UCCuyo -->
+    <header class="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-3.5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-accent flex items-center justify-center text-white font-bold text-xl shadow-md">
+                    M
+                </div>
+                <div>
+                    <h1 class="text-base sm:text-lg font-bold text-gray-800 tracking-wide uppercase">MATEMÁTICA Y BIOESTADÍSTICA MÉDICA</h1>
+                    <p class="text-xs text-gray-500 font-semibold">PreMédico (Facultad de Cs. Médicas - UCCuyo)</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <!-- Botón Guía de Uso -->
+                <button onclick="openTutorial()" class="flex items-center gap-1.5 px-3 py-1.5 bg-accent text-white text-xs font-semibold rounded-lg shadow-sm hover:bg-accent-hover transition">
+                    <i class="fa-solid fa-circle-question text-sm"></i>
+                    <span>Guía de Uso</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenedor Principal con Menú Lateral Oficial Vesalio -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 flex flex-col lg:flex-row gap-6">
+        
+        <!-- Menú de Navegación Lateral Oficial -->
+        <nav class="w-full lg:w-64 flex flex-row lg:flex-col gap-2 bg-white p-3 rounded-2xl shadow-sm border border-gray-100 overflow-x-auto lg:overflow-x-visible whitespace-nowrap lg:whitespace-normal sticky top-20 h-fit shrink-0">
+            <button onclick="switchModule(1)" id="nav-mod-1" class="tab-btn bg-accent text-white flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-xs sm:text-sm font-semibold transition shadow-sm flex items-center gap-2.5">
+                <i class="fa-solid fa-chart-pie w-4 text-center"></i>
+                <span>1. Población y Muestra</span>
+            </button>
+            <button onclick="switchModule(2)" id="nav-mod-2" class="tab-btn text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-xs sm:text-sm font-medium transition flex items-center gap-2.5">
+                <i class="fa-solid fa-sitemap w-4 text-center"></i>
+                <span>2. Taxonomía de Variables</span>
+            </button>
+            <button onclick="switchModule(3)" id="nav-mod-3" class="tab-btn text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-xs sm:text-sm font-medium transition flex items-center gap-2.5">
+                <i class="fa-solid fa-tags w-4 text-center"></i>
+                <span>3. Escalas Cualitativas</span>
+            </button>
+            <button onclick="switchModule(4)" id="nav-mod-4" class="tab-btn text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-xs sm:text-sm font-medium transition flex items-center gap-2.5">
+                <i class="fa-solid fa-ruler-combined w-4 text-center"></i>
+                <span>4. Campo Numérico</span>
+            </button>
+            <button onclick="switchModule(5)" id="nav-mod-5" class="tab-btn text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-xs sm:text-sm font-medium transition flex items-center gap-2.5">
+                <i class="fa-solid fa-user-doctor w-4 text-center"></i>
+                <span>5. Taller Clínico</span>
+            </button>
+        </nav>
+
+        <!-- Área Dinámica de Contenido de los Módulos -->
+        <div class="flex-1 w-full min-w-0 space-y-6">
+            <section id="module-1" class="module-section space-y-6">
+      
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center gap-2 text-accent text-xs font-bold uppercase tracking-wider mb-1">
+          <i class="fa-solid fa-chart-pie"></i> Módulo 1 • Bioestadística Médica UCCuyo
+        </div>
+        <h2 class="text-2xl font-extrabold text-slate-900">Conceptos Estadísticos Fundamentales y Niveles de Agregación</h2>
+        <p class="text-slate-600 text-sm mt-1 max-w-3xl">Delimitación metodológica rigurosa de Población ($N$), Muestra ($n$) representativa y la Unidad de Observación elemental en salud pública.</p>
+      </div>
+      <div class="p-3 bg-accent-light rounded-xl border border-accent/20 text-xs shrink-0 flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-accent text-white flex items-center justify-center font-bold text-lg shadow-sm">
+          1
+        </div>
+        <div>
+          <span class="font-bold text-slate-800 block text-xs">Unidad Temática IV</span>
+          <span class="text-slate-500 text-[11px]">Curso de Ingreso a Medicina</span>
+        </div>
+      </div>
+    </div>
+  
+
+      <!-- Tríada de Definiciones Rigurosas -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <!-- Población -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-accent bg-accent-light px-2.5 py-1 rounded-md">Macro-nivel</span>
+            <span class="text-lg font-mono font-bold text-[#344f00]">\(N\)</span>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 mb-2">Población o Universo</h3>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4 text-justify">
+            Conjunto exhaustivo y bien delimitado de <strong>todos los elementos o unidades</strong> en los cuales se verifica una característica de interés clínico o biológico.
+          </p>
+          <div class="bg-slate-50 border-l-4 border-accent p-3 rounded-r-lg text-xs text-slate-700">
+            <strong>Ejemplo Médico Sanjuanino:</strong> Todos los pacientes de 18 a 22 años de la Provincia de San Juan evaluados en el Programa de Prevención del Tabaquismo; o la totalidad de pacientes con HTA registrados en el Sistema Público de Salud Provincial de San Juan.
+          </div>
+        </div>
+
+        <!-- Muestra -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-medemerald-700 bg-emerald-50 px-2.5 py-1 rounded-md">Subconjunto</span>
+            <span class="text-lg font-mono font-bold text-medemerald-700">\(n\)</span>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 mb-2">Muestra Representativa</h3>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4 text-justify">
+            Fracción acotada extraída rigurosamente de la población \((n < N)\). Debe conservar la condición de <strong>representatividad estructural</strong> (mismas proporciones de edad, comorbilidades y sexo) para evitar sesgos de selección.
+          </p>
+          <div class="bg-slate-50 border-l-4 border-medemerald-600 p-3 rounded-r-lg text-xs text-slate-700">
+            <strong>Condición Metodológica:</strong> Si el 40% de la población presenta tabaquismo activo, una muestra válida debe reflejar aproximadamente ese \(40\%\) con un margen de error muestral controlado.
+          </div>
+        </div>
+
+        <!-- Individuo / Unidad de Observación -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-700 bg-amber-50 px-2.5 py-1 rounded-md">Unidad Elemental</span>
+            <span class="text-lg font-mono font-bold text-amber-700">\(u_i\)</span>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 mb-2">Individuo o Unidad de Observación</h3>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4 text-justify">
+            Componente elemental mínimo, indivisible, que porta la información observable. <em>Desmitificación biomédica:</em> No se limita a personas físicas (ej. paciente Ana Gómez); puede ser una ficha clínica, una biopsia tisular o un centro de atención primaria (CAPS).
+          </p>
+          <div class="bg-slate-50 border-l-4 border-amber-600 p-3 rounded-r-lg text-xs text-slate-700">
+            <strong>Ejemplo:</strong> En un estudio de bioseguridad, la unidad de observación puede ser la <em>habitación de internación</em> o la <em>vivienda</em> (relevando presencia de vector de Chagas en Caucete).
+          </div>
+        </div>
+      </div>
+
+      <!-- LABORATORIO INTERACTIVO DE SELECCIÓN MUESTRAL -->
+      <div class="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm">
+        <div class="max-w-3xl mb-6">
+          <span class="text-xs font-bold uppercase tracking-wider text-accent bg-blue-50 px-3 py-1 rounded-full">Simulador Experimental</span>
+          <h3 class="text-xl font-bold text-slate-900 mt-2">Laboratorio de Muestreo Clínico Estratificado</h3>
+          <p class="text-xs sm:text-sm text-slate-600 mt-1">
+            Visualiza cómo a partir de una población diana (\(N = 2400\) pacientes hipertensos del Gran San Juan distribuidos en 4 estratos de severidad clínica), se extrae una muestra aleatoria representativa de \(n = 300\).
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <!-- Canvas de Población y Muestra -->
+          <div class="lg:col-span-7 bg-slate-900 rounded-2xl p-4 shadow-inner relative flex flex-col items-center">
+            <div class="w-full flex justify-between items-center text-xs text-slate-300 pb-2 border-b border-slate-800 px-2 font-mono">
+              <span>Espacio Poblacional \(N = 2400\)</span>
+              <span id="sampleCounterBadge" class="text-emerald-400 font-bold">Muestra n = 0</span>
+            </div>
+            <div class="w-full h-64 sm:h-80 relative overflow-hidden my-2">
+              <canvas id="samplingCanvas" class="w-full h-full block rounded-xl bg-slate-950"></canvas>
+            </div>
+            <!-- Leyenda de Estratos -->
+            <div class="flex flex-wrap justify-center gap-4 text-xs mt-2 text-slate-300">
+              <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-sky-400"></span>Normotenso (40%)</span>
+              <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>Prehipertenso (30%)</span>
+              <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>HTA Grado 1 (20%)</span>
+              <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>HTA Grado 2 (10%)</span>
+            </div>
+          </div>
+
+          <!-- Controles y Análisis Comparativo -->
+          <div class="lg:col-span-5 space-y-5">
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+              <h4 class="text-sm font-bold text-slate-900 mb-3">Parámetros de Extracción Muestral</h4>
+              
+              <div class="space-y-4 text-xs">
+                <div>
+                  <div class="flex justify-between font-semibold text-slate-700 mb-1">
+                    <span>Tamaño de la Muestra (\(n\)):</span>
+                    <span id="nValText" class="text-accent font-mono font-bold">300 pacientes</span>
+                  </div>
+                  <input type="range" id="sampleSizeSlider" min="100" max="600" step="50" value="300" class="w-full accent-[#436600] cursor-pointer">
+                  <div class="flex justify-between text-[10px] text-slate-400 font-mono">
+                    <span>n = 100</span>
+                    <span>n = 300</span>
+                    <span>n = 600</span>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Técnica de Muestreo:</label>
+                  <select id="samplingMethodSelect" class="w-full p-2.5 bg-white border border-slate-300 rounded-lg text-slate-700 font-medium focus:ring-2 focus:ring-accent">
+                    <option value="stratified">Aleatorio Estratificado Proporcional (Recomendado)</option>
+                    <option value="simple">Aleatorio Simple (Riesgo de sub-representación de estratos minoritarios)</option>
+                  </select>
+                </div>
+
+                <button id="btnExecuteSampling" class="w-full py-3 bg-accent hover:bg-accent-hover active:scale-[0.98] text-white font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                  Ejecutar Muestreo Aleatorio
+                </button>
+              </div>
+            </div>
+
+            <!-- Tabla de Proporciones Muestra vs Población -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-4 text-xs">
+              <div class="text-xs font-bold text-slate-800 mb-2 flex items-center justify-between">
+                <span>Homología Población vs. Muestra Obtenida</span>
+                <span id="biasWarningBadge" class="hidden text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Sesgo Leve Detectado</span>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                  <thead>
+                    <tr class="text-slate-400 border-b border-slate-100 text-[11px]">
+                      <th class="py-1">Estrato</th>
+                      <th class="py-1">% Población</th>
+                      <th class="py-1">% Muestra (\(n\))</th>
+                      <th class="py-1">Fidelidad</th>
+                    </tr>
+                  </thead>
+                  <tbody id="strataTableBody" class="divide-y divide-slate-100 font-mono text-[11px]">
+                    <!-- Se llena con JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         MÓDULO 2: TAXONOMÍA GENERAL DE VARIABLES
+         ========================================== -->
+            <section id="module-2" class="module-section space-y-6 hidden">
+      
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center gap-2 text-accent text-xs font-bold uppercase tracking-wider mb-1">
+          <i class="fa-solid fa-sitemap"></i> Módulo 2 • Bioestadística Médica UCCuyo
+        </div>
+        <h2 class="text-2xl font-extrabold text-slate-900">Concepto y Taxonomía General de Variables</h2>
+        <p class="text-slate-600 text-sm mt-1 max-w-3xl">Definición formal de Variable ($X$) y conmutador dinámico del Árbol de Decisión Taxonómico con ejemplos clínicos reales.</p>
+      </div>
+      <div class="p-3 bg-accent-light rounded-xl border border-accent/20 text-xs shrink-0 flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-accent text-white flex items-center justify-center font-bold text-lg shadow-sm">
+          2
+        </div>
+        <div>
+          <span class="font-bold text-slate-800 block text-xs">Unidad Temática IV</span>
+          <span class="text-slate-500 text-[11px]">Curso de Ingreso a Medicina</span>
+        </div>
+      </div>
+    </div>
+  
+
+      <!-- Definición Rigurosa -->
+      <div class="bg-gradient-to-r from-medblue-50 via-white to-emerald-50 border border-slate-200 rounded-2xl p-6 mb-8 text-xs sm:text-sm leading-relaxed text-slate-700">
+        <div class="font-bold text-base text-slate-900 mb-2">Definición Formal de Variable Biomédica (\(X\)):</div>
+        <p class="mb-3 text-justify">
+          Una variable \(X\) es una <strong>característica, magnitud, vector o propiedad medible u observable</strong> que adopta diferentes modalidades, categorías o valores numéricos entre los distintos individuos de la población bajo estudio. Si una propiedad no presenta variación interindividual dentro del diseño, se clasifica como una <em>constante biológica</em> (ej. el número de ojos en mamíferos no lesionados).
+        </p>
+        <div class="bg-white p-3 rounded-xl border border-slate-200 font-mono text-center text-[#283d00] shadow-sm overflow-x-auto py-2">
+          $$\text{Variable } X \begin{cases} \text{Cualitativa (Atributos)} \begin{cases} \text{Nominal (Sin jerarquía intrínseca)} \\ \text{Ordinal (Con gradiente de orden)} \end{cases} \\ \text{Cuantitativa (Magnitudes)} \begin{cases} \text{Discreta (Conteo, } \mathbb{Z}^+ \text{)} \\ \text{Continua (Medición instrumental, } \mathbb{R} \text{)} \end{cases} \end{cases}$$
+        </div>
+      </div>
+
+      <!-- ÁRBOL DE DECISIÓN TAXONÓMICO DINÁMICO -->
+      <div class="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-medemerald-700 bg-emerald-50 px-3 py-1 rounded-full">Simulador de Decisión</span>
+            <h3 class="text-xl font-bold text-slate-900 mt-1">Conmutador Taxonómico Interactivo</h3>
+            <p class="text-xs text-slate-500">Selecciona un parámetro clínico real y observa cómo el algoritmo bifurca las decisiones metodológicas.</p>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Seleccionar Caso Biomédico de Prueba:</label>
+            <select id="caseSelector" class="p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-800 focus:ring-2 focus:ring-accent">
+              <option value="tas">Tensión Arterial Sistólica (mmHg)</option>
+              <option value="tnm">Estadificación Tumoral TNM (I, II, III, IV)</option>
+              <option value="hijos">Número de Hijos Nacidos Vivos</option>
+              <option value="grupo">Grupo Sanguíneo ABO (A, B, AB, O)</option>
+              <option value="fumador">Hábito Tabáquico (Fumador / No fumador)</option>
+              <option value="talla">Estatura del Paciente (cm)</option>
+              <option value="glasgow">Puntaje Escala de Glasgow (Puntos 3-15)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Diagrama Visual de Árbol Taxonómico -->
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 relative overflow-x-auto">
+          <div class="min-w-[650px] grid grid-cols-4 gap-4 text-center text-xs">
+            
+            <!-- Nivel 0: Variable -->
+            <div class="col-span-4 flex justify-center mb-2">
+              <div id="nodeRoot" class="px-6 py-2.5 rounded-xl bg-slate-800 text-white font-bold shadow-md transition-all duration-300">
+                Variable Médica Analizada: <span id="lblVariableName" class="text-sky-300 font-mono">Tensión Arterial Sistólica</span>
+              </div>
+            </div>
+
+            <!-- Bifurcación Principal -->
+            <div class="col-span-2 flex flex-col items-center">
+              <div id="nodeCuali" class="w-full py-3 px-4 rounded-xl border-2 border-slate-300 bg-white text-slate-700 font-bold shadow-sm transition-all duration-300">
+                <div class="text-sm">Cualitativa (Categórica)</div>
+                <div class="text-[10px] text-slate-500 font-normal">Propiedades, cualidades o estados no numéricos</div>
+              </div>
+            </div>
+
+            <div class="col-span-2 flex flex-col items-center">
+              <div id="nodeCuanti" class="w-full py-3 px-4 rounded-xl border-2 border-slate-300 bg-white text-slate-700 font-bold shadow-sm transition-all duration-300">
+                <div class="text-sm">Cuantitativa (Numérica)</div>
+                <div class="text-[10px] text-slate-500 font-normal">Escalares numéricos resultantes de conteo o medición</div>
+              </div>
+            </div>
+
+            <!-- Subniveles Cualitativa -->
+            <div class="col-span-1">
+              <div id="nodeNominal" class="h-full p-3 rounded-xl border-2 border-slate-300 bg-white text-slate-600 transition-all duration-300">
+                <div class="font-bold text-slate-800 text-xs">Nominal</div>
+                <p class="text-[10px] text-slate-500 mt-1">Sin relación jerárquica de precedencia.</p>
+              </div>
+            </div>
+
+            <div class="col-span-1">
+              <div id="nodeOrdinal" class="h-full p-3 rounded-xl border-2 border-slate-300 bg-white text-slate-600 transition-all duration-300">
+                <div class="font-bold text-slate-800 text-xs">Ordinal</div>
+                <p class="text-[10px] text-slate-500 mt-1">Con orden o gradiente cualitativo intrínseco.</p>
+              </div>
+            </div>
+
+            <!-- Subniveles Cuantitativa -->
+            <div class="col-span-1">
+              <div id="nodeDiscreta" class="h-full p-3 rounded-xl border-2 border-slate-300 bg-white text-slate-600 transition-all duration-300">
+                <div class="font-bold text-slate-800 text-xs">Discreta (\(\mathbb{Z}^+\))</div>
+                <p class="text-[10px] text-slate-500 mt-1">Valores enteros aislados mediante conteo.</p>
+              </div>
+            </div>
+
+            <div class="col-span-1">
+              <div id="nodeContinua" class="h-full p-3 rounded-xl border-2 border-slate-300 bg-white text-slate-600 transition-all duration-300">
+                <div class="font-bold text-slate-800 text-xs">Continua (\(\mathbb{R}\))</div>
+                <p class="text-[10px] text-slate-500 mt-1">Intervalo real continuo mediante instrumentos.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Veredicto Didáctico Instantáneo -->
+        <div id="decisionCardFeedback" class="mt-4 p-4 rounded-xl bg-sky-50 border border-sky-200 text-xs text-sky-900 leading-relaxed flex items-start gap-3">
+          <svg class="w-5 h-5 text-medblue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <div>
+            <span class="font-bold text-sm block mb-0.5" id="feedbackTitle">Justificación Metodológica:</span>
+            <span id="feedbackText">La Tensión Arterial Sistólica proviene de la medición con un esfigmomanómetro. Puede adoptar cualquier valor en la recta real continua \(\mathbb{R}\), sujeta a la sensibilidad del manómetro (ej. 120.5 mmHg). Es una Variable Cuantitativa Continua.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         MÓDULO 3: VARIABLES CUALITATIVAS Y ESCALAS
+         ========================================== -->
+            <section id="module-3" class="module-section space-y-6 hidden">
+      
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center gap-2 text-accent text-xs font-bold uppercase tracking-wider mb-1">
+          <i class="fa-solid fa-tags"></i> Módulo 3 • Bioestadística Médica UCCuyo
+        </div>
+        <h2 class="text-2xl font-extrabold text-slate-900">Variables Cualitativas o Categóricas y Escalas de Medición</h2>
+        <p class="text-slate-600 text-sm mt-1 max-w-3xl">Distinción metodológica de escalas Nominales (dicotómicas y policotómicas) y Ordinales (gradientes clínicos como NYHA y TNM).</p>
+      </div>
+      <div class="p-3 bg-accent-light rounded-xl border border-accent/20 text-xs shrink-0 flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-accent text-white flex items-center justify-center font-bold text-lg shadow-sm">
+          3
+        </div>
+        <div>
+          <span class="font-bold text-slate-800 block text-xs">Unidad Temática IV</span>
+          <span class="text-slate-500 text-[11px]">Curso de Ingreso a Medicina</span>
+        </div>
+      </div>
+    </div>
+  
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- ESCALA NOMINAL -->
+        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-bold uppercase tracking-wider text-accent bg-sky-50 px-2.5 py-1 rounded-md">Escala de Clasificación Pura</span>
+              <span class="text-xs font-mono font-bold text-slate-400">Sin Jerarquía \((A \neq B)\)</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-2">1. Escala Nominal</h3>
+            <p class="text-xs text-slate-600 text-justify mb-4">
+              En esta escala, las modalidades son <strong>excluyentes y exhaustivas</strong>. La única relación matemática lícita es la de igualdad o diferencia (\(=\) o \(\neq\)). No existe ningún orden natural ni sentido de gradación mayor/menor.
+            </p>
+
+            <div class="space-y-3">
+              <!-- Dicotómicas -->
+              <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                <div class="font-bold text-xs text-slate-800 flex items-center justify-between">
+                  <span>Dicotómicas o Binarias (2 modalidades)</span>
+                  <span class="text-[10px] bg-slate-200 text-slate-700 px-2 py-0.5 rounded font-mono">k = 2</span>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-1">Presencia o ausencia de factor de riesgo o patología.</p>
+                <div class="flex gap-2 mt-2">
+                  <span class="px-2 py-1 bg-white border border-slate-200 rounded text-[11px] text-slate-700">Sexo Biológico (F/M)</span>
+                  <span class="px-2 py-1 bg-white border border-slate-200 rounded text-[11px] text-slate-700">Hábito Tabáquico (Fumador / No fumador)</span>
+                  <span class="px-2 py-1 bg-white border border-slate-200 rounded text-[11px] text-slate-700">Infección por Chagas (+ / -)</span>
+                </div>
+              </div>
+
+              <!-- Policotómicas -->
+              <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                <div class="font-bold text-xs text-slate-800 flex items-center justify-between">
+                  <span>Policotómicas (> 2 modalidades)</span>
+                  <span class="text-[10px] bg-slate-200 text-slate-700 px-2 py-0.5 rounded font-mono">k > 2</span>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-1">Múltiples categorías sin ningún tipo de prelación ni jerarquía biológica.</p>
+                <div class="flex flex-wrap gap-2 mt-2">
+                  <span class="px-2 py-1 bg-white border border-slate-200 rounded text-[11px] text-slate-700 font-mono">Grupo ABO: {A, B, AB, O}</span>
+                  <span class="px-2 py-1 bg-white border border-slate-200 rounded text-[11px] text-slate-700">Color de iris: {Marrón, Verde, Azul}</span>
+                  <span class="px-2 py-1 bg-white border border-slate-200 rounded text-[11px] text-slate-700">Especialidad de Egreso</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-6 pt-4 border-t border-slate-100 text-[11px] text-slate-500 italic">
+            <strong>Advertencia Didáctica:</strong> Asignar números (ej. Femenino = 1, Masculino = 2) es una simple etiqueta o codificación alfa-numérica; sería un error metodológico calcular una media como "1.5".
+          </div>
+        </div>
+
+        <!-- ESCALA ORDINAL -->
+        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-bold uppercase tracking-wider text-medemerald-700 bg-emerald-50 px-2.5 py-1 rounded-md">Escala de Rango o Jerarquía</span>
+              <span class="text-xs font-mono font-bold text-slate-400">Con Orden \((A < B < C)\)</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-2">2. Escala Ordinal</h3>
+            <p class="text-xs text-slate-600 text-justify mb-4">
+              Existe una <strong>relación intrínseca de precedencia o intensidad clínica</strong>. Las modalidades se pueden jerarquizar (\(<\) o \(>\)), pero <em>no se puede afirmar</em> que la distancia matemática entre el estadio I y el II sea equivalente a la distancia entre el III y el IV.
+            </p>
+
+            <!-- Ejemplos Clínicos Reales Interactivos -->
+            <div class="space-y-3">
+              <!-- Caso 1: Disnea NYHA -->
+              <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                <span class="text-xs font-bold text-slate-800">Grados de Capacidad Funcional (Disnea - Escala NYHA)</span>
+                <div class="grid grid-cols-4 gap-1.5 mt-2 text-center text-[10px]">
+                  <div class="p-1.5 bg-white border border-slate-200 rounded font-semibold text-emerald-700">Clase I<br><span class="font-normal text-slate-500">Actividad ordinaria</span></div>
+                  <div class="p-1.5 bg-white border border-slate-200 rounded font-semibold text-sky-700">Clase II<br><span class="font-normal text-slate-500">Limitación leve</span></div>
+                  <div class="p-1.5 bg-white border border-slate-200 rounded font-semibold text-amber-700">Clase III<br><span class="font-normal text-slate-500">Limitación marcada</span></div>
+                  <div class="p-1.5 bg-white border border-slate-200 rounded font-semibold text-rose-700">Clase IV<br><span class="font-normal text-slate-500">En reposo absoluto</span></div>
+                </div>
+              </div>
+
+              <!-- Caso 2: Estadificación Oncológica TNM -->
+              <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                <span class="text-xs font-bold text-slate-800">Estadificación Tumoral Anatómica (TNM)</span>
+                <p class="text-[11px] text-slate-500 mt-1">
+                  Estadio I \(\prec\) Estadio II \(\prec\) Estadio III \(\prec\) Estadio IV. El paso de un estadio a otro implica mayor diseminación o gravedad pronóstica, pero no una distancia métrica proporcional fija.
+                </p>
+              </div>
+
+              <!-- Caso 3: Nivel de Instrucción -->
+              <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                <span class="text-xs font-bold text-slate-800">Nivel de Instrucción del Paciente</span>
+                <div class="flex items-center justify-between text-[11px] text-slate-600 mt-1">
+                  <span>Primario</span>
+                  <span>&rarr;</span>
+                  <span>Secundario</span>
+                  <span>&rarr;</span>
+                  <span>Universitario</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-slate-100 text-[11px] text-slate-500 italic">
+            <strong>Propiedad Fundamental:</strong> Las operaciones aritméticas (+, -, ×, ÷) carecen de sentido formal sobre categorías ordinales; sólo proceden estadísticos de orden (medianas, percentiles o frecuencias acumuladas).
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         MÓDULO 4: VARIABLES CUANTITATIVAS
+         ========================================== -->
+            <section id="module-4" class="module-section space-y-6 hidden">
+      
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center gap-2 text-accent text-xs font-bold uppercase tracking-wider mb-1">
+          <i class="fa-solid fa-ruler-combined"></i> Módulo 4 • Bioestadística Médica UCCuyo
+        </div>
+        <h2 class="text-2xl font-extrabold text-slate-900">Variables Cuantitativas y Naturaleza del Campo Numérico</h2>
+        <p class="text-slate-600 text-sm mt-1 max-w-3xl">Fundamentos formales del conteo discreto en $\mathbb{Z}^+$ (imposibilidad de fracciones ontológicas) vs. medición en el continuo real $\mathbb{R}$.</p>
+      </div>
+      <div class="p-3 bg-accent-light rounded-xl border border-accent/20 text-xs shrink-0 flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-accent text-white flex items-center justify-center font-bold text-lg shadow-sm">
+          4
+        </div>
+        <div>
+          <span class="font-bold text-slate-800 block text-xs">Unidad Temática IV</span>
+          <span class="text-slate-500 text-[11px]">Curso de Ingreso a Medicina</span>
+        </div>
+      </div>
+    </div>
+  
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <!-- Discretas -->
+        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-accent bg-sky-50 px-2.5 py-1 rounded-md">Proceso de Conteo</span>
+            <span class="text-sm font-mono font-bold text-accent">\(X \in \mathbb{Z}^+\)</span>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 mb-2">Variables Cuantitativas Discretas</h3>
+          <p class="text-xs text-slate-600 text-justify mb-4 leading-relaxed">
+            Se generan mediante un <strong>procedimiento de enumeración o conteo</strong>. Adoptan valores aislados pertenecientes al conjunto de números enteros no negativos. Entre dos valores enteros consecutivos \(k\) y \(k+1\), no existe ningún valor intermedio admisible con significado empírico.
+          </p>
+          
+          <div class="bg-rose-50 border border-rose-200 rounded-xl p-3.5 mb-3 text-xs text-rose-900">
+            <div class="font-bold flex items-center gap-1.5 mb-1">
+              <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+              Imposibilidad Ontológica en Medicina:
+            </div>
+            Una paciente gestante puede tener \(1\), \(2\) o \(3\) hijos nacidos vivos. Es matemáticamente inadmisible e inexistente en la naturaleza registrar \(1.75\) o \(2.4\) hijos como dato individual.
+          </div>
+
+          <div class="text-[11px] text-slate-500 font-mono space-y-1">
+            <div>• Número de episodios convulsivos en 24 h: \(\{0, 1, 2, 3, \dots\}\)</div>
+            <div>• Dosis administradas de un antibiótico: \(\{1, 2, 3\}\)</div>
+            <div>• Cantidad de piezas dentarias cariadas: \(\{0, 1, \dots, 32\}\)</div>
+          </div>
+        </div>
+
+        <!-- Continuas -->
+        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-medemerald-700 bg-emerald-50 px-2.5 py-1 rounded-md">Proceso de Medición</span>
+            <span class="text-sm font-mono font-bold text-medemerald-700">\(X \in \mathbb{R}\)</span>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 mb-2">Variables Cuantitativas Continuas</h3>
+          <p class="text-xs text-slate-600 text-justify mb-4 leading-relaxed">
+            Se obtienen a través de un <strong>procedimiento de medición instrumental</strong> (esfigmomanómetro, balanza, cinta métrica, espectrofotómetro). Teóricamente pueden adoptar cualquier valor numérico dentro de un intervalo continuo de la recta real (\(\mathbb{R}\)), admitiendo infinitas fracciones o decimales condicionados únicamente por la precisión del instrumento.
+          </p>
+
+          <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3.5 mb-3 text-xs text-emerald-900">
+            <div class="font-bold flex items-center gap-1.5 mb-1">
+              <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Precisión de Medición en Clínica:
+            </div>
+            La masa corporal de un neonato puede medirse en \(3.2 \text{ kg}\), o con balanza de precisión como \(3.245 \text{ kg}\). Entre \(3.2\) y \(3.3 \text{ kg}\) existen infinitos valores biológicamente reales.
+          </div>
+
+          <div class="text-[11px] text-slate-500 font-mono space-y-1">
+            <div>• Presión Arterial Diastólica: \([40.0, 130.0] \text{ mmHg}\)</div>
+            <div>• Glucemia plasmática en ayunas: \([50.0, 450.0] \text{ mg/dL}\)</div>
+            <div>• Estatura del paciente: \([0.45, 2.15] \text{ m}\)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VISUALIZADOR DE LA RECTA NUMÉRICA BIOMÉDICA -->
+      <div class="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm">
+        <div class="max-w-3xl mb-6">
+          <span class="text-xs font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full">Visualizador Dinámico de Campo</span>
+          <h3 class="text-xl font-bold text-slate-900 mt-2">La Recta Numérica: Salto Discreto vs. Continuo Densamente Infinito</h3>
+          <p class="text-xs text-slate-500 mt-1">
+            Experimenta deslizando el valor de una variable para evidenciar la naturaleza del espacio numérico y su coherencia biológica.
+          </p>
+        </div>
+
+        <div class="bg-slate-900 text-white rounded-2xl p-6">
+          <!-- Conmutador de Modelo Numérico -->
+          <div class="flex flex-wrap gap-3 mb-6">
+            <button id="btnSelectDiscrete" class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-accent text-white shadow">
+              <span>Modelo Discreto (\(\mathbb{Z}^+\)): Hijos de una Paciente</span>
+            </button>
+            <button id="btnSelectContinuous" class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-slate-800 text-slate-300 hover:bg-slate-700">
+              <span>Modelo Continuo (\(\mathbb{R}\)): Glucemia en Ayunas (mg/dL)</span>
+            </button>
+          </div>
+
+          <!-- Canvas de la Recta Numérica -->
+          <div class="relative w-full h-36 bg-slate-950 rounded-xl overflow-hidden border border-slate-800 mb-4">
+            <canvas id="numberLineCanvas" class="w-full h-full block"></canvas>
+          </div>
+
+          <!-- Slider de exploración -->
+          <div class="space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-400">Modificar valor observado en la escala:</span>
+              <span id="sliderValueDisplay" class="font-mono text-emerald-400 font-bold text-sm">Valor: 2</span>
+            </div>
+            <input type="range" id="realNumberSlider" class="w-full accent-emerald-500 cursor-pointer">
+            <div id="sliderExplanation" class="text-xs text-slate-400 font-sans mt-2 bg-slate-800/60 p-3 rounded-lg border border-slate-700">
+              <!-- Mensaje didáctico dinámico -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         MÓDULO 5: TALLER DIAGNÓSTICO INTERACTIVO
+         ========================================== -->
+            <section id="module-5" class="module-section space-y-6 hidden">
+      
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center gap-2 text-accent text-xs font-bold uppercase tracking-wider mb-1">
+          <i class="fa-solid fa-user-doctor"></i> Módulo 5 • Bioestadística Médica UCCuyo
+        </div>
+        <h2 class="text-2xl font-extrabold text-slate-900">Taller Diagnóstico Interactivo de Clasificación Biomédica</h2>
+        <p class="text-slate-600 text-sm mt-1 max-w-3xl">Evaluación formativa de historias clínicas reales sanjuaninas con retroalimentación razonada inmediata y matriz resumen para el ingresante.</p>
+      </div>
+      <div class="p-3 bg-accent-light rounded-xl border border-accent/20 text-xs shrink-0 flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-accent text-white flex items-center justify-center font-bold text-lg shadow-sm">
+          5
+        </div>
+        <div>
+          <span class="font-bold text-slate-800 block text-xs">Unidad Temática IV</span>
+          <span class="text-slate-500 text-[11px]">Curso de Ingreso a Medicina</span>
+        </div>
+      </div>
+    </div>
+  
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Ficha de la Historia Clínica Actual -->
+        <div class="lg:col-span-7 bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col justify-between">
+          <div>
+            <!-- Header de la Ficha Clínica -->
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="text-xs font-mono font-bold uppercase text-slate-600" id="caseIndexBadge">Ficha Clínica 1 de 6</span>
+              </div>
+              <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-semibold" id="caseHospitalTag">Hospital Universitario Docente</span>
+            </div>
+
+            <!-- Contexto del Paciente -->
+            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 mb-6">
+              <div class="text-[11px] font-bold uppercase text-[#344f00] mb-1 font-mono">Extracto de Historia Clínica:</div>
+              <div class="text-sm font-semibold text-slate-900" id="patientNarrative">
+                "Paciente masculino de 58 años, oriundo de Rivadavia. Ingresa al servicio de guardia médica con diagnóstico de Diabetes Mellitus Tipo 2..."
+              </div>
+            </div>
+
+            <!-- Parámetro en Evaluación -->
+            <div class="bg-sky-50 border-2 border-sky-300 rounded-2xl p-5 mb-6 text-center">
+              <span class="text-xs font-bold uppercase tracking-wider text-accent">Parámetro a Clasificar (\(X\)):</span>
+              <div class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1" id="targetParameterName">
+                Glucemia en Ayunas (142.6 mg/dL)
+              </div>
+              <div class="text-xs text-slate-600 mt-1 font-mono" id="targetParameterPrompt">
+                Determina su Tipo Macro y su Escala Específica
+              </div>
+            </div>
+
+            <!-- Interfaz de Selección Rápida de Clasificación -->
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-2">1. Naturaleza General de la Variable:</label>
+                <div class="grid grid-cols-2 gap-3" id="groupTypeSelector">
+                  <button type="button" data-type="cualitativa" class="btn-quiz-type py-2.5 px-4 rounded-xl border-2 border-slate-300 font-bold text-xs text-slate-700 hover:border-medblue-500 transition">
+                    Cualitativa (Categórica)
+                  </button>
+                  <button type="button" data-type="cuantitativa" class="btn-quiz-type py-2.5 px-4 rounded-xl border-2 border-slate-300 font-bold text-xs text-slate-700 hover:border-medblue-500 transition">
+                    Cuantitativa (Numérica)
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-2">2. Escala o Naturaleza Específica:</label>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="groupSubtypeSelector">
+                  <button type="button" data-subtype="nominal" class="btn-quiz-sub py-2.5 px-2 rounded-xl border-2 border-slate-300 font-semibold text-xs text-slate-700 hover:border-medblue-500 transition text-center">
+                    Nominal
+                  </button>
+                  <button type="button" data-subtype="ordinal" class="btn-quiz-sub py-2.5 px-2 rounded-xl border-2 border-slate-300 font-semibold text-xs text-slate-700 hover:border-medblue-500 transition text-center">
+                    Ordinal
+                  </button>
+                  <button type="button" data-subtype="discreta" class="btn-quiz-sub py-2.5 px-2 rounded-xl border-2 border-slate-300 font-semibold text-xs text-slate-700 hover:border-medblue-500 transition text-center">
+                    Discreta (\(\mathbb{Z}^+\))
+                  </button>
+                  <button type="button" data-subtype="continua" class="btn-quiz-sub py-2.5 px-2 rounded-xl border-2 border-slate-300 font-semibold text-xs text-slate-700 hover:border-medblue-500 transition text-center">
+                    Continua (\(\mathbb{R}\))
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botón de Envío y Retroalimentación -->
+          <div class="mt-8 pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <button id="btnCheckAnswer" class="w-full sm:w-auto px-8 py-3 bg-medemerald-600 hover:bg-medemerald-700 text-white font-bold rounded-xl shadow-md transition disabled:opacity-50 disabled:cursor-not-allowed">
+              Verificar Clasificación Médica
+            </button>
+            <button id="btnNextCase" class="hidden w-full sm:w-auto px-6 py-3 bg-medblue-700 hover:bg-medblue-800 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2">
+              <span>Siguiente Caso</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Panel de Retroalimentación Razonada y Marcador -->
+        <div class="lg:col-span-5 space-y-6">
+          <!-- Marcador de Desempeño Académico -->
+          <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Progreso de Autoevaluación</h4>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-semibold text-slate-700">Aciertos Diagnósticos:</span>
+              <span id="scoreText" class="font-mono text-lg font-bold text-medemerald-600">0 / 6</span>
+            </div>
+            <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+              <div id="scoreProgressBar" class="bg-gradient-to-r from-medblue-600 to-medemerald-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- Buzón de Retroalimentación Pedagógica -->
+          <div id="feedbackBox" class="bg-slate-50 border border-slate-200 rounded-3xl p-6 text-xs leading-relaxed text-slate-600 transition-all min-h-[220px]">
+            <div class="flex items-center gap-2 font-bold text-sm text-slate-800 mb-2">
+              <svg class="w-5 h-5 text-medblue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              Tutor Didáctico en Espera
+            </div>
+            <p>
+              Selecciona primero si el parámetro representa una cualidad (categoría) o una cantidad (número escalar), seguido de su escala formal. Pulsa "Verificar" para desplegar la justificación metodológica basada en el consenso de bioestadística médica.
+            </p>
+          </div>
+        </div>
+      </div>
+    
+
+<!-- RESUMEN TAXONÓMICO SINTÉTICO (GUÍA DE ESTUDIO UCCUYO) -->
+    <section class="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl">
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-8">
+          <span class="text-xs uppercase font-extrabold tracking-wider text-sky-400 bg-sky-950 px-3 py-1 rounded-full border border-sky-800">Guía de Bolsillo para el Ingresante</span>
+          <h3 class="text-2xl font-bold mt-2">Matriz de Decisión y Propiedades Aritméticas</h3>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">Reglas operacionales básicas aplicables en medicina y epidemiología clínica.</p>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-slate-800 text-slate-300 font-mono text-[11px] uppercase">
+                <th class="py-3 px-3">Escala</th>
+                <th class="py-3 px-3">Relaciones Válidas</th>
+                <th class="py-3 px-3">Operaciones Lícitas</th>
+                <th class="py-3 px-3">Estadísticos Descriptivos</th>
+                <th class="py-3 px-3">Ejemplo Clave</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800 text-slate-300 font-mono text-[11px]">
+              <tr class="hover:bg-slate-800/40 transition">
+                <td class="py-3 px-3 font-bold text-sky-400">Nominal</td>
+                <td class="py-3 px-3">\(=\), \(\neq\)</td>
+                <td class="py-3 px-3">Ninguna (sólo conteo)</td>
+                <td class="py-3 px-3">Moda, Proporciones (%)</td>
+                <td class="py-3 px-3 text-slate-400">Grupo sanguíneo, Sexo</td>
+              </tr>
+              <tr class="hover:bg-slate-800/40 transition">
+                <td class="py-3 px-3 font-bold text-emerald-400">Ordinal</td>
+                <td class="py-3 px-3">\(=\), \(\neq\), \(<\), \(>\)</td>
+                <td class="py-3 px-3">Jerarquización</td>
+                <td class="py-3 px-3">Mediana, Percentiles</td>
+                <td class="py-3 px-3 text-slate-400">TNM, Glasgow, NYHA</td>
+              </tr>
+              <tr class="hover:bg-slate-800/40 transition">
+                <td class="py-3 px-3 font-bold text-amber-400">Cuantitativa Discreta</td>
+                <td class="py-3 px-3">\(=\), \(\neq\), \(<\), \(>\)</td>
+                <td class="py-3 px-3">\(+\), \(-\) (Conteo \(\mathbb{Z}^+\))</td>
+                <td class="py-3 px-3">Media, Mediana, Moda</td>
+                <td class="py-3 px-3 text-slate-400">Hijos, Dosis, Convulsiones</td>
+              </tr>
+              <tr class="hover:bg-slate-800/40 transition">
+                <td class="py-3 px-3 font-bold text-rose-400">Cuantitativa Continua</td>
+                <td class="py-3 px-3">Todas en \(\mathbb{R}\)</td>
+                <td class="py-3 px-3">\(+\), \(-\), \(\times\), \(\div\)</td>
+                <td class="py-3 px-3">Media aritmética, Desvío Estándar</td>
+                <td class="py-3 px-3 text-slate-400">Tensión arterial, Glucemia</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+</section>
+        </div>
+    </main>
+
+    <!-- Modal Tutorial / Guía de Uso -->
+    <div id="tutorial-modal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-xl space-y-4 max-h-[90vh] overflow-y-auto custom-scroll">
+            <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                <div class="flex items-center gap-2 text-accent font-bold text-lg">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Guía de Uso del Simulador • Bioestadística Médica</span>
+                </div>
+                <button onclick="closeTutorial()" class="text-gray-400 hover:text-gray-600 transition text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4 text-xs sm:text-sm text-gray-600 leading-relaxed">
+                <p>
+                    Bienvenido al <strong>Laboratorio Interactivo de Estadística Descriptiva y Clasificación de Variables</strong> para el Curso de Ingreso a Medicina (UCCuyo). Este simulador aborda la delimitación poblacional, el muestreo estratificado representativo, la taxonomía formal de variables clínicas y la naturaleza matemática de los campos numéricos.
+                </p>
+
+                <div class="space-y-3">
+                    <!-- Módulo 1 -->
+                    <div class="p-3.5 bg-slate-50 rounded-xl border border-gray-200 space-y-1.5">
+                        <div class="font-bold text-gray-900 text-xs sm:text-sm flex items-center gap-2 text-accent">
+                            <i class="fa-solid fa-chart-pie"></i> 1. Conceptos Fundamentales y Muestreo Estratificado
+                        </div>
+                        <ul class="list-disc list-inside space-y-1 text-xs text-gray-700 ml-1">
+                            <li><strong>Población ($N$) vs. Muestra ($n$):</strong> Modela una población diana ($N = 2400$) de pacientes del Gran San Juan distribuidos en 4 estratos de severidad clínica (Normotenso 40%, Prehipertenso 30%, HTA Grado 1 20%, HTA Grado 2 10%).</li>
+                            <li><strong>Laboratorio de Muestreo en Canvas:</strong> Ajusta el tamaño muestral ($n = 100$ a $600$) y compara la técnica <em>Aleatoria Estratificada Proporcional</em> con la <em>Aleatoria Simple</em> para evidenciar cómo esta última genera sesgo de selección en estratos minoritarios mediante la tabla de fidelidad.</li>
+                            <li><strong>Unidad de Observación o Individuo ($u_i$):</strong> Desmitifica que la unidad deba ser una persona física; en salud puede ser una ficha epidemiológica, una biopsia o una vivienda en vigilancia vectorial de Chagas en Caucete.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Módulo 2 -->
+                    <div class="p-3.5 bg-slate-50 rounded-xl border border-gray-200 space-y-1.5">
+                        <div class="font-bold text-gray-900 text-xs sm:text-sm flex items-center gap-2 text-accent">
+                            <i class="fa-solid fa-sitemap"></i> 2. Taxonomía General de Variables
+                        </div>
+                        <ul class="list-disc list-inside space-y-1 text-xs text-gray-700 ml-1">
+                            <li><strong>Definición Formal de Variable ($X$):</strong> Característica medible u observable que asume distintas modalidades entre las unidades de observación frente a las constantes biológicas.</li>
+                            <li><strong>Árbol de Decisión Taxonómico Dinámico:</strong> Conmutador interactivo con 7 parámetros médicos reales (TAS, estadificación TNM, número de hijos, grupo sanguíneo ABO, tabaquismo, talla y score Glasgow) que bifurca visualmente la ruta de clasificación con fundamentación metodológica.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Módulo 3 -->
+                    <div class="p-3.5 bg-slate-50 rounded-xl border border-gray-200 space-y-1.5">
+                        <div class="font-bold text-gray-900 text-xs sm:text-sm flex items-center gap-2 text-accent">
+                            <i class="fa-solid fa-tags"></i> 3. Escalas Cualitativas (Nominal y Ordinal)
+                        </div>
+                        <ul class="list-disc list-inside space-y-1 text-xs text-gray-700 ml-1">
+                            <li><strong>Escala Nominal:</strong> Modalidades exhaustivas y mutuamente excluyentes donde la única relación válida es de equivalencia o diferencia ($A \neq B$). Diferencia entre variables <em>Dicotómicas</em> (sexo biológico, tabaquismo, Chagas) y <em>Policotómicas</em> (sistema ABO, iris, especialidad).</li>
+                            <li><strong>Escala Ordinal:</strong> Categorías ordenadas bajo un gradiente o relación de precedencia ($A < B < C$) sin distancias numéricas equivalentes: clases funcionales de disnea (NYHA I a IV), estadificación tumoral anatómica (TNM) y nivel de instrucción formal.</li>
+                            <li><strong>Regla Operacional:</strong> Prohibición metodológica de calcular medias aritméticas sobre etiquetas numéricas o códigos ordinales.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Módulo 4 -->
+                    <div class="p-3.5 bg-slate-50 rounded-xl border border-gray-200 space-y-1.5">
+                        <div class="font-bold text-gray-900 text-xs sm:text-sm flex items-center gap-2 text-accent">
+                            <i class="fa-solid fa-ruler-combined"></i> 4. Variables Cuantitativas y Naturaleza del Campo Numérico
+                        </div>
+                        <ul class="list-disc list-inside space-y-1 text-xs text-gray-700 ml-1">
+                            <li><strong>Conteo Discreto en $\mathbb{Z}^+$:</strong> Generadas por conteo de elementos aislados (hijos nacidos vivos, episodios convulsivos, dosis). Demostración de la <em>imposibilidad ontológica</em> de registrar valores fraccionarios en el sujeto individual (ej. $1.5$ hijos).</li>
+                            <li><strong>Medición Continua en $\mathbb{R}$:</strong> Generadas por instrumentos clínicos (glucemia, presión arterial, talla, temperatura). Entre dos marcas de la escala existen infinitos valores decimales biológicamente posibles condicionados por la sensibilidad instrumental.</li>
+                            <li><strong>Canvas de la Recta Numérica:</strong> Conmutador interactivo que permite deslizar valores y constatar visualmente el salto discreto paso a paso frente a la densidad infinita de la recta real.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Módulo 5 -->
+                    <div class="p-3.5 bg-slate-50 rounded-xl border border-gray-200 space-y-1.5">
+                        <div class="font-bold text-gray-900 text-xs sm:text-sm flex items-center gap-2 text-accent">
+                            <i class="fa-solid fa-user-doctor"></i> 5. Taller Diagnóstico de Historias Clínicas y Matriz Resumen
+                        </div>
+                        <ul class="list-disc list-inside space-y-1 text-xs text-gray-700 ml-1">
+                            <li><strong>6 Historias Clínicas Reales:</strong> Casos contextualizados en distintos niveles de atención sanitaria (Hospitales de Alta Complejidad, Centros de Especialidades Médicas, Centros Quirúrgicos y Centros de Atención Primaria).</li>
+                            <li><strong>Autoevaluación Formativa de 2 Fases:</strong> Clasificación del tipo macro (Cualitativa / Cuantitativa) y escala específica (Nominal, Ordinal, Discreta o Continua), con fundamentación pedagógica razonada inmediata, barra de progreso y opción de reinicio.</li>
+                            <li><strong>Matriz de Decisión para el Ingresante:</strong> Cuadro sinóptico de bolsillo con las relaciones lícitas ($=, \neq, <, >$), operaciones admisibles ($+, -, \times, \div$) y estadísticos descriptivos válidos para cada escala de medición.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="p-3.5 bg-amber-50 rounded-xl border border-amber-200 text-amber-800 space-y-1.5">
+                    <h4 class="font-bold flex items-center gap-1.5 text-xs sm:text-sm">
+                        <i class="fa-solid fa-lightbulb"></i>
+                        Recomendaciones para el Examen de Ingreso UCCuyo
+                    </h4>
+                    <p class="text-xs leading-relaxed">
+                        Presta atención a no confundir una codificación numérica arbitraria (ej. Varón = 1, Mujer = 2) con una variable cuantitativa, ni calcular medias o sumas sobre categorías puramente ordinales (ej. estadios tumorales).
+                    </p>
+                </div>
+            </div>
+
+            <div class="pt-3 border-t border-gray-100 flex justify-end">
+                <button onclick="closeTutorial()" class="px-5 py-2.5 bg-accent text-white text-xs sm:text-sm font-semibold rounded-xl hover:bg-accent-hover transition shadow-sm">
+                    Entendido, comenzar exploración
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pie de Página Institucional Obligatorio -->
+    <footer class="bg-white border-t border-gray-200 py-4 mt-8 text-center text-xs text-gray-500">
+        Desarrollado por vesalio - Todos los derechos reservados
+    </footer>
+
+    <!-- LÓGICA JAVASCRIPT DEL SIMULADOR -->
+    <script>
+        // Modal Tutorial
+        function openTutorial() {
+            const m = document.getElementById('tutorial-modal');
+            if (m) m.classList.remove('hidden');
+        }
+
+        function closeTutorial() {
+            const m = document.getElementById('tutorial-modal');
+            if (m) m.classList.add('hidden');
+        }
+
+        // Navegación Dinámica de Módulos (Sidebar Oficial)
+        function switchModule(modIndex) {
+            for (let i = 1; i <= 5; i++) {
+                const sec = document.getElementById('module-' + i);
+                const btn = document.getElementById('nav-mod-' + i);
+                if (!sec || !btn) continue;
+                
+                if (i === modIndex) {
+                    sec.classList.remove('hidden');
+                    btn.className = "tab-btn bg-accent text-white flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-xs sm:text-sm font-semibold transition shadow-sm flex items-center gap-2.5";
+                } else {
+                    sec.classList.add('hidden');
+                    btn.className = "tab-btn text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-xs sm:text-sm font-medium transition flex items-center gap-2.5";
+                }
+            }
+            if (modIndex === 1) {
+                setTimeout(resizeSampleCanvas, 50);
+            }
+            if (modIndex === 4) {
+                setTimeout(resizeNumberCanvas, 50);
+            }
+        }
+
+        // Inicialización segura de KaTeX
+    function initKatex() {
+      if (typeof renderMathInElement === 'function') {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '\\[', right: '\\]', display: true},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '$', right: '$', display: false}
+          ],
+          throwOnError: false
+        });
+      }
+    }
+
+    /* ===================================================
+       1. SIMULADOR DE MUESTREO CLÍNICO (CANVAS)
+       =================================================== */
+    const sampleCanvas = document.getElementById('samplingCanvas');
+    const ctxSample = sampleCanvas.getContext('2d');
+    const nSlider = document.getElementById('sampleSizeSlider');
+    const nValText = document.getElementById('nValText');
+    const sampleBadge = document.getElementById('sampleCounterBadge');
+    const strataSelect = document.getElementById('samplingMethodSelect');
+    const btnExecuteSampling = document.getElementById('btnExecuteSampling');
+    const strataTableBody = document.getElementById('strataTableBody');
+    const biasWarning = document.getElementById('biasWarningBadge');
+
+    const TOTAL_POP = 2400;
+    // Estratos poblacionales en San Juan:
+    // 0: Normotenso (40%), 1: Prehipertenso (30%), 2: HTA Grado 1 (20%), 3: HTA Grado 2 (10%)
+    const STRATA_DEFS = [
+      { id: 0, name: 'Normotenso', pPop: 0.40, color: '#38bdf8' },
+      { id: 1, name: 'Prehipertenso', pPop: 0.30, color: '#34d399' },
+      { id: 2, name: 'HTA Grado 1', pPop: 0.20, color: '#fbbf24' },
+      { id: 3, name: 'HTA Grado 2', pPop: 0.10, color: '#f43f5e' }
+    ];
+
+    let population = [];
+    let sampleIndices = new Set();
+    let isAnimatingSample = false;
+
+    function resizeSampleCanvas() {
+      const rect = sampleCanvas.parentElement.getBoundingClientRect();
+      sampleCanvas.width = rect.width;
+      sampleCanvas.height = rect.height;
+      generatePopulation();
+      drawSamplingWorld();
+    }
+
+    function generatePopulation() {
+      population = [];
+      sampleIndices.clear();
+      const w = sampleCanvas.width;
+      const h = sampleCanvas.height;
+
+      // Distribuir N=2400 pacientes sintéticos
+      for (let i = 0; i < TOTAL_POP; i++) {
+        // Asignar estrato según proporción
+        const rand = Math.random();
+        let stratum = 0;
+        if (rand < 0.40) stratum = 0;
+        else if (rand < 0.70) stratum = 1;
+        else if (rand < 0.90) stratum = 2;
+        else stratum = 3;
+
+        population.push({
+          x: Math.random() * (w - 16) + 8,
+          y: Math.random() * (h - 16) + 8,
+          stratum: stratum,
+          color: STRATA_DEFS[stratum].color
+        });
+      }
+    }
+
+    function drawSamplingWorld() {
+      ctxSample.clearRect(0, 0, sampleCanvas.width, sampleCanvas.height);
+
+      // Dibujar todos los puntos de la población
+      for (let i = 0; i < population.length; i++) {
+        const p = population[i];
+        const isSelected = sampleIndices.has(i);
+
+        ctxSample.beginPath();
+        if (isSelected) {
+          ctxSample.arc(p.x, p.y, 4, 0, Math.PI * 2);
+          ctxSample.fillStyle = '#ffffff';
+          ctxSample.fill();
+          ctxSample.lineWidth = 2;
+          ctxSample.strokeStyle = p.color;
+          ctxSample.stroke();
+        } else {
+          ctxSample.arc(p.x, p.y, 1.8, 0, Math.PI * 2);
+          ctxSample.fillStyle = p.color;
+          ctxSample.globalAlpha = sampleIndices.size > 0 ? 0.25 : 0.8;
+          ctxSample.fill();
+          ctxSample.globalAlpha = 1.0;
+        }
+      }
+    }
+
+    function executeSampling() {
+      const targetN = parseInt(nSlider.value, 10);
+      const method = strataSelect.value;
+      sampleIndices.clear();
+
+      if (method === 'stratified') {
+        // Muestreo estratificado proporcional riguroso
+        STRATA_DEFS.forEach(st => {
+          const countNeeded = Math.round(targetN * st.pPop);
+          const candidates = [];
+          population.forEach((pt, idx) => {
+            if (pt.stratum === st.id) candidates.push(idx);
+          });
+          // Mezclar candidatos (Fisher-Yates)
+          for (let i = candidates.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+          }
+          candidates.slice(0, countNeeded).forEach(idx => sampleIndices.add(idx));
+        });
+      } else {
+        // Aleatorio Simple
+        const allIndices = Array.from({ length: TOTAL_POP }, (_, i) => i);
+        for (let i = allIndices.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [allIndices[i], allIndices[j]] = [allIndices[j], allIndices[i]];
+        }
+        allIndices.slice(0, targetN).forEach(idx => sampleIndices.add(idx));
+      }
+
+      drawSamplingWorld();
+      updateSamplingAnalytics();
+    }
+
+    function updateSamplingAnalytics() {
+      const n = sampleIndices.size;
+      sampleBadge.textContent = `Muestra n = ${n} pacientes`;
+
+      // Contar estratos en la muestra
+      const sampleCounts = [0, 0, 0, 0];
+      sampleIndices.forEach(idx => {
+        sampleCounts[population[idx].stratum]++;
+      });
+
+      strataTableBody.innerHTML = '';
+      let hasSignificantBias = false;
+
+      STRATA_DEFS.forEach(st => {
+        const countInSample = sampleCounts[st.id];
+        const pSample = n > 0 ? (countInSample / n) : 0;
+        const diff = Math.abs(pSample - st.pPop);
+        if (diff > 0.04) hasSignificantBias = true;
+
+        const fidelityText = diff <= 0.02 ? 'Óptima' : (diff <= 0.04 ? 'Aceptable' : 'Sesgada');
+        const fidelityColor = diff <= 0.02 ? 'text-emerald-600 font-bold' : (diff <= 0.04 ? 'text-sky-600' : 'text-rose-600 font-bold');
+
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50 transition';
+        tr.innerHTML = `
+          <td class="py-1.5 flex items-center gap-1.5 font-sans font-medium text-slate-800">
+            <span class="w-2 h-2 rounded-full" style="background-color: ${st.color}"></span>
+            ${st.name}
+          </td>
+          <td class="py-1.5 text-slate-600">${(st.pPop * 100).toFixed(0)}%</td>
+          <td class="py-1.5 text-slate-900 font-bold">${(pSample * 100).toFixed(1)}% (${countInSample})</td>
+          <td class="py-1.5 ${fidelityColor}">${fidelityText}</td>
+        `;
+        strataTableBody.appendChild(tr);
+      });
+
+      if (hasSignificantBias && strataSelect.value === 'simple') {
+        biasWarning.classList.remove('hidden');
+        biasWarning.textContent = 'Alerta: Sesgo de Estratificación';
+      } else {
+        biasWarning.classList.add('hidden');
+      }
+    }
+
+    nSlider.addEventListener('input', (e) => {
+      nValText.textContent = `${e.target.value} pacientes`;
+    });
+
+    btnExecuteSampling.addEventListener('click', executeSampling);
+
+    /* ===================================================
+       2. CONMUTADOR DE ÁRBOL TAXONÓMICO DE VARIABLES
+       =================================================== */
+    const casesData = {
+      tas: {
+        name: 'Tensión Arterial Sistólica (mmHg)',
+        cuali: false,
+        subtype: 'continua',
+        title: 'Variable Cuantitativa Continua (Medición Instrumental)',
+        feedback: 'La TAS se obtiene mediante un tensiómetro. Es una magnitud que pertenece a la recta real continua \\(\\mathbb{R}\\). Aunque suele redondearse al entero más próximo (ej. 120 mmHg), en biofísica hemodinámica admite infinitos valores decimales (120.45 mmHg).'
+      },
+      tnm: {
+        name: 'Estadificación Tumoral TNM (I, II, III, IV)',
+        cuali: true,
+        subtype: 'ordinal',
+        title: 'Variable Cualitativa Ordinal (Escala Jerárquica)',
+        feedback: 'Los estadios oncológicos expresan una gradación anatómica progresiva de severidad (Estadio I < II < III < IV). Sin embargo, carece de significado medir una "distancia numérica" fija entre estadios; no es una escala métrica.'
+      },
+      hijos: {
+        name: 'Número de Hijos Nacidos Vivos',
+        cuali: false,
+        subtype: 'discreta',
+        title: 'Variable Cuantitativa Discreta (Proceso de Conteo)',
+        feedback: 'Proviene del conteo directo de personas nacidas. El dominio pertenece a los enteros \\(\\mathbb{Z}^+\\) \\(\{0, 1, 2, \\dots\}\\). Existe imposibilidad ontológica de registrar fracciones intermedias (no es posible tener 1.5 hijos).'
+      },
+      grupo: {
+        name: 'Grupo Sanguíneo ABO (A, B, AB, O)',
+        cuali: true,
+        subtype: 'nominal',
+        title: 'Variable Cualitativa Nominal Policotómica',
+        feedback: 'Identifica la presencia o ausencia de antígenos eritrocitarios en la membrana celular. Es cualitativa sin ningún tipo de prelación o jerarquía intrínseca entre los grupos A, B, AB u O.'
+      },
+      fumador: {
+        name: 'Hábito Tabáquico (Fumador / No fumador)',
+        cuali: true,
+        subtype: 'nominal',
+        title: 'Variable Cualitativa Nominal Dicotómica (Binaria)',
+        feedback: 'Clasifica a la unidad de observación en dos categorías mutuamente excluyentes y exhaustivas (\(k = 2\)). No existe relación matemática de orden numérico entre fumar o no fumar.'
+      },
+      talla: {
+        name: 'Estatura del Paciente (cm o m)',
+        cuali: false,
+        subtype: 'continua',
+        title: 'Variable Cuantitativa Continua (Dimensión Física)',
+        feedback: 'Magnitud física de longitud corporal. Puede adoptar cualquier valor en \\(\\mathbb{R}^+\\) dependiendo de la sensibilidad del estadiómetro (ej. 173.2 cm o 1.732 m).'
+      },
+      glasgow: {
+        name: 'Puntaje Escala de Coma de Glasgow (3-15)',
+        cuali: true,
+        subtype: 'ordinal',
+        title: 'Variable Cualitativa Ordinal (Puntaje Clínico / Score)',
+        feedback: 'Aunque se exprese con números del 3 al 15, la escala de Glasgow es una suma de rangos clínicos cualitativos (respuesta ocular, verbal y motora). Un paciente con 14 puntos no posee exactamente el "doble de conciencia" que uno con 7.'
+      }
+    };
+
+    const caseSelector = document.getElementById('caseSelector');
+    const lblVariableName = document.getElementById('lblVariableName');
+    const nodeCuali = document.getElementById('nodeCuali');
+    const nodeCuanti = document.getElementById('nodeCuanti');
+    const nodeNominal = document.getElementById('nodeNominal');
+    const nodeOrdinal = document.getElementById('nodeOrdinal');
+    const nodeDiscreta = document.getElementById('nodeDiscreta');
+    const nodeContinua = document.getElementById('nodeContinua');
+    const feedbackTitle = document.getElementById('feedbackTitle');
+    const feedbackText = document.getElementById('feedbackText');
+
+    function resetTreeStyles() {
+      [nodeCuali, nodeCuanti, nodeNominal, nodeOrdinal, nodeDiscreta, nodeContinua].forEach(el => {
+        el.className = el.className.replace(/border-accent|bg-sky-50|text-\[#283d00\]|scale-105|ring-2|ring-accent/g, '');
+        el.classList.add('border-slate-300', 'bg-white', 'text-slate-600');
+      });
+    }
+
+    function highlightNode(node) {
+      node.classList.remove('border-slate-300', 'bg-white', 'text-slate-600');
+      node.classList.add('border-accent', 'bg-sky-50', 'text-[#283d00]', 'ring-2', 'ring-accent/40');
+    }
+
+    function updateTaxonomicTree() {
+      const selectedKey = caseSelector.value;
+      const data = casesData[selectedKey];
+      lblVariableName.textContent = data.name;
+      resetTreeStyles();
+
+      if (data.cuali) {
+        highlightNode(nodeCuali);
+        if (data.subtype === 'nominal') highlightNode(nodeNominal);
+        if (data.subtype === 'ordinal') highlightNode(nodeOrdinal);
+      } else {
+        highlightNode(nodeCuanti);
+        if (data.subtype === 'discreta') highlightNode(nodeDiscreta);
+        if (data.subtype === 'continua') highlightNode(nodeContinua);
+      }
+
+      feedbackTitle.textContent = data.title;
+      feedbackText.innerHTML = data.feedback;
+      initKatex();
+    }
+
+    caseSelector.addEventListener('change', updateTaxonomicTree);
+
+    /* ===================================================
+       3. VISUALIZADOR RECTA NUMÉRICA: DISCRETA VS CONTINUA
+       =================================================== */
+    const numCanvas = document.getElementById('numberLineCanvas');
+    const ctxNum = numCanvas.getContext('2d');
+    const realSlider = document.getElementById('realNumberSlider');
+    const sliderDisplay = document.getElementById('sliderValueDisplay');
+    const sliderExplanation = document.getElementById('sliderExplanation');
+    const btnDiscrete = document.getElementById('btnSelectDiscrete');
+    const btnContinuous = document.getElementById('btnSelectContinuous');
+
+    let currentMode = 'discrete'; // 'discrete' | 'continuous'
+
+    function resizeNumberCanvas() {
+      const rect = numCanvas.parentElement.getBoundingClientRect();
+      numCanvas.width = rect.width;
+      numCanvas.height = rect.height;
+      drawNumberLine();
+    }
+
+    function setupSliderMode(mode) {
+      currentMode = mode;
+      if (mode === 'discrete') {
+        btnDiscrete.className = 'px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-accent text-white shadow';
+        btnContinuous.className = 'px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-slate-800 text-slate-300 hover:bg-slate-700';
+        realSlider.min = "0";
+        realSlider.max = "6";
+        realSlider.step = "1";
+        realSlider.value = "2";
+      } else {
+        btnContinuous.className = 'px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-medemerald-600 text-white shadow';
+        btnDiscrete.className = 'px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-slate-800 text-slate-300 hover:bg-slate-700';
+        realSlider.min = "60";
+        realSlider.max = "200";
+        realSlider.step = "0.1";
+        realSlider.value = "105.4";
+      }
+      updateNumberView();
+    }
+
+    function drawNumberLine() {
+      const w = numCanvas.width;
+      const h = numCanvas.height;
+      ctxNum.clearRect(0, 0, w, h);
+
+      const cy = h / 2;
+      const margin = 50;
+
+      // Eje de la Recta
+      ctxNum.beginPath();
+      ctxNum.moveTo(margin, cy);
+      ctxNum.lineTo(w - margin, cy);
+      ctxNum.strokeStyle = '#475569';
+      ctxNum.lineWidth = 3;
+      ctxNum.stroke();
+
+      // Flechas en los extremos
+      ctxNum.fillStyle = '#475569';
+      ctxNum.beginPath();
+      ctxNum.moveTo(w - margin, cy - 6);
+      ctxNum.lineTo(w - margin + 12, cy);
+      ctxNum.lineTo(w - margin, cy + 6);
+      ctxNum.fill();
+
+      if (currentMode === 'discrete') {
+        // Puntos discretos enteros: 0, 1, 2, 3, 4, 5, 6
+        const steps = 6;
+        const currentVal = parseInt(realSlider.value, 10);
+
+        for (let i = 0; i <= steps; i++) {
+          const x = margin + (i / steps) * (w - 2 * margin);
+
+          // Marca de graduación
+          ctxNum.beginPath();
+          ctxNum.arc(x, cy, 6, 0, Math.PI * 2);
+          ctxNum.fillStyle = (i === currentVal) ? '#38bdf8' : '#64748b';
+          ctxNum.fill();
+
+          if (i === currentVal) {
+            ctxNum.lineWidth = 3;
+            ctxNum.strokeStyle = '#ffffff';
+            ctxNum.stroke();
+          }
+
+          // Etiqueta
+          ctxNum.fillStyle = (i === currentVal) ? '#38bdf8' : '#94a3b8';
+          ctxNum.font = 'bold 12px JetBrains Mono';
+          ctxNum.textAlign = 'center';
+          ctxNum.fillText(`${i}`, x, cy + 24);
+        }
+
+        // Título del campo
+        ctxNum.fillStyle = '#38bdf8';
+        ctxNum.font = '10px Inter';
+        ctxNum.textAlign = 'left';
+        ctxNum.fillText('Campo Numérico Discreto: Z+ (Valores Aislados Sin Continuo)', margin, cy - 25);
+
+      } else {
+        // Escala continua: 60 a 200 mg/dL
+        const minVal = 60;
+        const maxVal = 200;
+        const currentVal = parseFloat(realSlider.value);
+        const steps = 7; // marcas mayores cada 20 mg/dL
+
+        for (let i = 0; i <= steps; i++) {
+          const val = minVal + i * 20;
+          const x = margin + ((val - minVal) / (maxVal - minVal)) * (w - 2 * margin);
+
+          ctxNum.beginPath();
+          ctxNum.moveTo(x, cy - 8);
+          ctxNum.lineTo(x, cy + 8);
+          ctxNum.strokeStyle = '#64748b';
+          ctxNum.lineWidth = 1.5;
+          ctxNum.stroke();
+
+          ctxNum.fillStyle = '#94a3b8';
+          ctxNum.font = '10px JetBrains Mono';
+          ctxNum.textAlign = 'center';
+          ctxNum.fillText(`${val}`, x, cy + 24);
+        }
+
+        // Indicador del valor continuo actual
+        const curX = margin + ((currentVal - minVal) / (maxVal - minVal)) * (w - 2 * margin);
+        
+        ctxNum.beginPath();
+        ctxNum.arc(curX, cy, 7, 0, Math.PI * 2);
+        ctxNum.fillStyle = '#34d399';
+        ctxNum.fill();
+        ctxNum.lineWidth = 2;
+        ctxNum.strokeStyle = '#ffffff';
+        ctxNum.stroke();
+
+        ctxNum.fillStyle = '#34d399';
+        ctxNum.font = 'bold 11px JetBrains Mono';
+        ctxNum.textAlign = 'center';
+        ctxNum.fillText(`${currentVal.toFixed(1)} mg/dL`, curX, cy - 16);
+
+        ctxNum.fillStyle = '#34d399';
+        ctxNum.font = '10px Inter';
+        ctxNum.textAlign = 'left';
+        ctxNum.fillText('Campo Continuo: R (Infinitos Valores Intermedios Fraccionarios)', margin, cy - 25);
+      }
+    }
+
+    function updateNumberView() {
+      if (currentMode === 'discrete') {
+        const val = realSlider.value;
+        sliderDisplay.textContent = `Hijos registrados: ${val}`;
+        sliderExplanation.innerHTML = `<strong>Análisis de Discretización:</strong> El registro actual es exactamente <strong>${val} hijos</strong>. Un valor intermedio como <em>"${val}.4 hijos"</em> carece de existencia real. Es una variable cuántica biológica entera \\(X \\in \\mathbb{Z}^+\\).`;
+      } else {
+        const val = parseFloat(realSlider.value).toFixed(1);
+        sliderDisplay.textContent = `Glucemia: ${val} mg/dL`;
+        sliderExplanation.innerHTML = `<strong>Análisis de Continuidad:</strong> El valor medido es <strong>${val} mg/dL</strong>. Entre este valor y ${ (parseFloat(val) + 0.1).toFixed(1) } mg/dL residen infinitos valores reales intermedios admisibles condicionados a la sensibilidad instrumental \\(X \\in \\mathbb{R}\\).`;
+      }
+      drawNumberLine();
+      initKatex();
+    }
+
+    realSlider.addEventListener('input', updateNumberView);
+    btnDiscrete.addEventListener('click', () => setupSliderMode('discrete'));
+    btnContinuous.addEventListener('click', () => setupSliderMode('continuous'));
+
+    /* ===================================================
+       4. TALLER DIAGNÓSTICO INTERACTIVO DE HISTORIAS CLÍNICAS
+       =================================================== */
+    const diagnosticCases = [
+      {
+        hospital: "Hospital Escuela Universitario",
+        narrative: "Paciente masculino de 58 años. Asiste a control glucémico ambulatorio por antecedente de Diabetes Mellitus.",
+        param: "Glucemia plasmática en ayunas (142.6 mg/dL)",
+        correctType: "cuantitativa",
+        correctSubtype: "continua",
+        rationale: "La glucemia proviene de un procedimiento de medición por espectrofotometría o tira reactiva. Puede asumir cualquier valor en la recta real continua \\(\\mathbb{R}\\), admitiendo decimales según la sensibilidad del laboratorio."
+      },
+      {
+        hospital: "Hospital General de Agudos",
+        narrative: "Paciente femenina de 64 años, ingresa a consulta oftalmológica especializada. En el fondo de ojo se evalúa el compromiso vascular retiniano.",
+        param: "Estadio de retinopatía diabética (Sin retinopatía, No proliferativa leve, Moderada, Severa, Proliferativa)",
+        correctType: "cualitativa",
+        correctSubtype: "ordinal",
+        rationale: "Es una variable cualitativa porque expresa categorías o estadios lesionales. Es ordinal porque existe un claro gradiente de severidad clínica progresiva, sin distancias métricas equivalentes."
+      },
+      {
+        hospital: "Centro Quirúrgico y Banco de Sangre",
+        narrative: "Paciente de 32 años en control prequirúrgico electivo. Se solicita tipificación hemática para banco de sangre.",
+        param: "Grupo sanguíneo ABO (Grupo A)",
+        correctType: "cualitativa",
+        correctSubtype: "nominal",
+        rationale: "El sistema ABO expresa una cualidad antigénica molecular eritrocitaria. Es nominal policotómica ya que no existe ninguna relación jerárquica o de orden cuantitativo entre los grupos A, B, AB u O."
+      },
+      {
+        hospital: "Hospital Zonal de Complejidad Media",
+        narrative: "Paciente de 72 años internado en sala de clínica médica. El equipo médico enumera patologías coexistentes para estratificación de riesgo.",
+        param: "Número de comorbilidades crónicas diagnosticadas (3 comorbilidades: HTA, DM2, EPOC)",
+        correctType: "cuantitativa",
+        correctSubtype: "discreta",
+        rationale: "El número de comorbilidades se obtiene mediante conteo. Pertenece al conjunto de los números enteros \\(\\mathbb{Z}^+\\); es inviable presentar 2.7 patologías."
+      },
+      {
+        hospital: "Centro de Atención Primaria de la Salud (CAPS)",
+        narrative: "Evaluación del programa de control de hipertensión arterial. Se indaga sobre el cumplimiento del tratamiento farmacológico prescrito.",
+        param: "Adherencia al tratamiento antihipertensivo (Adherente / No adherente)",
+        correctType: "cualitativa",
+        correctSubtype: "nominal",
+        rationale: "Es cualitativa nominal dicotómica o binaria (2 estados posibles). Clasifica a la unidad de observación en dos categorías mutuamente excluyentes sin jerarquía métrica."
+      },
+      {
+        hospital: "Hospital Regional Departamental",
+        narrative: "Ingreso pediátrico en guardia médica. Se registra la temperatura axilar mediante termómetro digital de precisión.",
+        param: "Temperatura corporal axilar (38.7 °C)",
+        correctType: "cuantitativa",
+        correctSubtype: "continua",
+        rationale: "La temperatura es una magnitud termodinámica continua \\(X \\in \\mathbb{R}\\). Aunque el termómetro clínico presente resolución de décimas (0.1 °C), la propiedad física subyacente es un continuo."
+      }
+    ];
+
+    let currentCaseIdx = 0;
+    let score = 0;
+    let selectedType = null;
+    let selectedSubtype = null;
+
+    const caseIndexBadge = document.getElementById('caseIndexBadge');
+    const caseHospitalTag = document.getElementById('caseHospitalTag');
+    const patientNarrative = document.getElementById('patientNarrative');
+    const targetParameterName = document.getElementById('targetParameterName');
+    const feedbackBox = document.getElementById('feedbackBox');
+    const scoreText = document.getElementById('scoreText');
+    const scoreProgressBar = document.getElementById('scoreProgressBar');
+    const btnCheckAnswer = document.getElementById('btnCheckAnswer');
+    const btnNextCase = document.getElementById('btnNextCase');
+
+    const typeButtons = document.querySelectorAll('.btn-quiz-type');
+    const subButtons = document.querySelectorAll('.btn-quiz-sub');
+
+    function loadCase(idx) {
+      const c = diagnosticCases[idx];
+      selectedType = null;
+      selectedSubtype = null;
+
+      caseIndexBadge.textContent = `Ficha Clínica ${idx + 1} de ${diagnosticCases.length}`;
+      caseHospitalTag.textContent = c.hospital;
+      patientNarrative.textContent = `"${c.narrative}"`;
+      targetParameterName.textContent = c.param;
+
+      // Limpiar estilos de botones
+      typeButtons.forEach(b => {
+        b.className = 'btn-quiz-type py-2.5 px-4 rounded-xl border-2 border-slate-300 font-bold text-xs text-slate-700 hover:border-medblue-500 transition';
+      });
+      subButtons.forEach(b => {
+        b.className = 'btn-quiz-sub py-2.5 px-2 rounded-xl border-2 border-slate-300 font-semibold text-xs text-slate-700 hover:border-medblue-500 transition text-center';
+      });
+
+      btnCheckAnswer.classList.remove('hidden');
+      btnNextCase.classList.add('hidden');
+
+      feedbackBox.className = 'bg-slate-50 border border-slate-200 rounded-3xl p-6 text-xs leading-relaxed text-slate-600 transition-all min-h-[220px]';
+      feedbackBox.innerHTML = `
+        <div class="flex items-center gap-2 font-bold text-sm text-slate-800 mb-2">
+          <svg class="w-5 h-5 text-medblue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          Tutor Didáctico en Espera
+        </div>
+        <p>Selecciona ambas categorías para contrastar con los criterios formales de la bioestadística médica.</p>
+      `;
+      initKatex();
+    }
+
+    typeButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        typeButtons.forEach(b => b.classList.remove('border-accent', 'bg-accent-light', 'text-[#283d00]'));
+        btn.classList.add('border-accent', 'bg-accent-light', 'text-[#283d00]');
+        selectedType = btn.dataset.type;
+      });
+    });
+
+    subButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        subButtons.forEach(b => b.classList.remove('border-accent', 'bg-accent-light', 'text-[#283d00]'));
+        btn.classList.add('border-accent', 'bg-accent-light', 'text-[#283d00]');
+        selectedSubtype = btn.dataset.subtype;
+      });
+    });
+
+    btnCheckAnswer.addEventListener('click', () => {
+      if (!selectedType || !selectedSubtype) {
+        feedbackBox.className = 'bg-amber-50 border border-amber-300 rounded-3xl p-6 text-xs leading-relaxed text-amber-900 transition-all';
+        feedbackBox.innerHTML = `<strong>Atención requerida:</strong> Debes seleccionar tanto el tipo macro (Cualitativa / Cuantitativa) como la escala específica (Nominal, Ordinal, Discreta o Continua) antes de validar.`;
+        return;
+      }
+
+      const c = diagnosticCases[currentCaseIdx];
+      const isCorrect = (selectedType === c.correctType) && (selectedSubtype === c.correctSubtype);
+
+      if (isCorrect) {
+        score++;
+        feedbackBox.className = 'bg-emerald-50 border border-emerald-300 rounded-3xl p-6 text-xs leading-relaxed text-emerald-950 transition-all shadow-sm';
+        feedbackBox.innerHTML = `
+          <div class="flex items-center gap-2 font-bold text-sm text-emerald-800 mb-2">
+            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            ¡Clasificación Rigurosamente Exacta!
+          </div>
+          <p class="mb-2"><strong>Dictamen Bioestadístico:</strong> Se trata efectivamente de una variable <em>${c.correctType.toUpperCase()} ${c.correctSubtype.toUpperCase()}</em>.</p>
+          <div class="bg-white/80 p-3 rounded-xl border border-emerald-200 mt-2 text-slate-700">
+            <strong>Fundamento Didáctico:</strong> ${c.rationale}
+          </div>
+        `;
+      } else {
+        feedbackBox.className = 'bg-rose-50 border border-rose-300 rounded-3xl p-6 text-xs leading-relaxed text-rose-950 transition-all shadow-sm';
+        feedbackBox.innerHTML = `
+          <div class="flex items-center gap-2 font-bold text-sm text-rose-800 mb-2">
+            <svg class="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            Clasificación Incorrecta
+          </div>
+          <p class="mb-2">Respuesta correcta: <strong>${c.correctType.toUpperCase()} ${c.correctSubtype.toUpperCase()}</strong>.</p>
+          <div class="bg-white/80 p-3 rounded-xl border border-rose-200 mt-2 text-slate-700">
+            <strong>Fundamento Didáctico:</strong> ${c.rationale}
+          </div>
+        `;
+      }
+
+      // Actualizar marcador
+      scoreText.textContent = `${score} / ${diagnosticCases.length}`;
+      const pct = Math.round((score / diagnosticCases.length) * 100);
+      scoreProgressBar.style.width = `${pct}%`;
+
+      btnCheckAnswer.classList.add('hidden');
+      btnNextCase.classList.remove('hidden');
+      initKatex();
+    });
+
+    btnNextCase.addEventListener('click', () => {
+      currentCaseIdx++;
+      if (currentCaseIdx < diagnosticCases.length) {
+        loadCase(currentCaseIdx);
+      } else {
+        // Fin de la autoevaluación
+        feedbackBox.className = 'bg-accent-light border border-medblue-300 rounded-3xl p-6 text-xs leading-relaxed text-medblue-950 transition-all text-center';
+        feedbackBox.innerHTML = `
+          <div class="font-extrabold text-base text-[#283d00] mb-2">¡Taller Diagnóstico Finalizado!</div>
+          <p class="text-sm">Has completado las ${diagnosticCases.length} historias clínicas con un puntaje final de <strong>${score} / ${diagnosticCases.length} (${Math.round((score/diagnosticCases.length)*100)}%)</strong>.</p>
+          <button onclick="restartQuiz()" class="mt-4 px-6 py-2.5 bg-accent hover:bg-accent-hover text-white font-bold rounded-xl transition shadow">
+            Reiniciar Taller Clínico
+          </button>
+        `;
+        btnNextCase.classList.add('hidden');
+      }
+    });
+
+    window.restartQuiz = function() {
+      score = 0;
+      currentCaseIdx = 0;
+      scoreText.textContent = `0 / ${diagnosticCases.length}`;
+      scoreProgressBar.style.width = '0%';
+      loadCase(0);
+    };
+
+    /* ===================================================
+       INICIALIZACIÓN GENERAL EN VENTANA ONLOAD
+       =================================================== */
+    window.addEventListener('load', () => {
+      switchModule(1);
+      resizeSampleCanvas();
+      resizeNumberCanvas();
+      executeSampling();
+      updateTaxonomicTree();
+      setupSliderMode('discrete');
+      loadCase(0);
+      initKatex();
+    });
+
+    window.addEventListener('resize', () => {
+      resizeSampleCanvas();
+      resizeNumberCanvas();
+    });
+    </script>
+</body>
+</html>
